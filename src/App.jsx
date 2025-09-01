@@ -12,15 +12,15 @@ function App() {
         <div className="addTodo">
           <h2 className='text-lg font-bold'>Add a todo</h2>
           <input type="text" name="" id="" />
-          <button>Add</button>
+          <button className='bg-indigo-500 hover:bg-indigo-700 p-2 py-1 text-sm font-bold text-white rounded-md m-2 transition-colors duration-150'>Add</button>
         </div>
           <h2 className='text-xl font-bold'>Your Todos</h2>
           <div className="todos">
             <div className="todo flex">
               <div className="text">Lorem ipsum dolor sit amet consectetur adipisicing.</div>
                 <div className="buttons">
-                  <button>Edit</button>
-                  <button>Delete</button>
+                  <button className='bg-indigo-500 hover:bg-indigo-700 p-2 py-1 text-sm font-bold text-white rounded-md m-2 transition-colors duration-150'>Edit</button>
+                  <button className='bg-indigo-500 hover:bg-indigo-700 p-2 py-1 text-sm font-bold text-white rounded-md m-2 transition-colors duration-150'>Delete</button>
                 </div>
               
             </div>
