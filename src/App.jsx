@@ -1,10 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "./components/Navbar";
 
 function App() {
   const [Todo, setTodo] = useState("");
-  const [Todos, setTodos] = useState([]);
+  const [Todos, setTodos] = useState(() => {
+    // ✅ Initialize from localStorage
+    const savedTodos = localStorage.getItem("todos");
+    return savedTodos ? JSON.parse(savedTodos) : [];
+  });
   const [editId, setEditId] = useState(null);
+
+  // ✅ Save to localStorage whenever Todos change
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(Todos));
+  }, [Todos]);
 
   const handleAdd = () => {
     if (Todo.trim() === "") {
@@ -13,15 +22,13 @@ function App() {
     }
 
     if (editId) {
-      // update todo in place
       setTodos(
         Todos.map((item) =>
           item.id === editId ? { ...item, text: Todo } : item
         )
       );
-      setEditId(null); // exit edit mode
+      setEditId(null);
     } else {
-      // add new todo
       setTodos([
         ...Todos,
         { id: Date.now(), text: Todo, isCompleted: false },
@@ -31,14 +38,11 @@ function App() {
     setTodo("");
   };
 
-  const handleChange = (e) => {
-    setTodo(e.target.value);
-  };
+  const handleChange = (e) => setTodo(e.target.value);
 
   const handleDelete = (id) => {
     setTodos(Todos.filter((item) => item.id !== id));
     if (editId === id) {
-      // if deleting the todo currently being edited → reset input
       setTodo("");
       setEditId(null);
     }
@@ -79,6 +83,7 @@ function App() {
                 type="text"
                 placeholder="Write your task..."
                 className="flex-1 border rounded-md p-2"
+                onKeyDown={(e) => e.key === "Enter" && handleAdd()}
               />
               <button
                 onClick={handleAdd}
