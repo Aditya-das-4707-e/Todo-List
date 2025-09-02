@@ -1,12 +1,49 @@
-# React + Vite
+# React Todo App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple and elegant Todo App built with React and TailwindCSS, featuring localStorage persistence, editing, and task filtering.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Add new todos  
+- Edit existing todos  
+- Delete todos  
+- Mark tasks as completed or uncompleted  
+- Data is saved in localStorage (persists even after refresh)  
+- Toggle "Show Finished" to filter only completed tasks  
+- Clean UI with TailwindCSS styling  
 
-## Expanding the ESLint configuration
+## Demo
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+![App Screenshot](/public/image.png)
+
+## Tech Stack
+
+- **React** (with Hooks)  
+- **TailwindCSS** for styling  
+- **localStorage** for persistence  
+
+## Project Structure
+
+src/ \
+├── components/   
+│ └── Navbar.jsx    
+├── App.jsx   
+└── main.jsx
+
+
+## Getting Started
+
+### Clone the repository  
+```bash
+git clone https://github.com/Aditya-das-4707-e/Todo-List.git
+cd react-todo-app
+```
+### Install dependencies
+```bash
+npm install
+```
+Run the development server
+```bash
+npm run dev
+```
+
