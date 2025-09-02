@@ -33,8 +33,9 @@ function App() {
           {Todos.map(item => {
 
 
-            return <div className="todo flex">
-              <div className={item.isCompleted?"":"line-through"}> {item.Todo} </div>
+            return <div key={Todo} className="todo flex w-1/4 m-2 justify-between">
+              <input type="checkbox" value={Todo.isCompleted}/>
+              <div className={item.isCompleted?"line-through":""}> {item.Todo} </div>
               <div className="buttons">
                 <button onClick={handleEdit} className='bg-indigo-500 hover:bg-indigo-700 p-2 py-1 text-sm font-bold text-white rounded-md m-2 mx-2 transition-colors duration-150'>Edit</button>
                 <button onClick={handleDelete} className='bg-indigo-500 hover:bg-indigo-700 p-2 py-1 text-sm font-bold text-white rounded-md m-2 mx-2 transition-colors duration-150'>Delete</button>
