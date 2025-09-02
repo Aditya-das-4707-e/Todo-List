@@ -4,13 +4,18 @@ import Navbar from "./components/Navbar";
 function App() {
   const [Todo, setTodo] = useState("");
   const [Todos, setTodos] = useState(() => {
-    // ✅ Initialize from localStorage
+    // Initialize from localStorage
     const savedTodos = localStorage.getItem("todos");
     return savedTodos ? JSON.parse(savedTodos) : [];
   });
+  const [showFinished, setShowFinished] = useState(false); // start with showing all
   const [editId, setEditId] = useState(null);
 
-  // ✅ Save to localStorage whenever Todos change
+  const toggleFinished = () => {
+    setShowFinished(!showFinished);
+  };
+
+  // Save to localStorage whenever Todos change
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(Todos));
   }, [Todos]);
@@ -102,6 +107,16 @@ function App() {
             </div>
           </div>
 
+          {/* Toggle for showing finished */}
+          <label className="flex items-center gap-2 mb-3">
+            <input
+              onChange={toggleFinished}
+              type="checkbox"
+              checked={showFinished}
+            />
+            Show Finished
+          </label>
+
           <h2 className="text-xl font-bold mb-3">Your Todos</h2>
           <div className="todos space-y-3">
             {Todos.length === 0 && (
@@ -109,7 +124,9 @@ function App() {
                 No todos available. Please add some tasks.
               </p>
             )}
-            {Todos.map((item) => (
+            {Todos.filter((item) =>
+              showFinished ? item.isCompleted : true
+            ).map((item) => (
               <div
                 key={item.id}
                 className="todo flex items-center justify-between p-3 bg-white rounded-md shadow-sm"
