@@ -1,53 +1,151 @@
-import { useState } from 'react'
-// import './App.css'
-import Navbar from './components/Navbar'
+import { useState } from "react";
+import Navbar from "./components/Navbar";
 
 function App() {
+  const [Todo, setTodo] = useState("");
+  const [Todos, setTodos] = useState([]);
+  const [editId, setEditId] = useState(null);
 
-  const [Todo, setTodo] = useState("")
-  const [Todos, setTodos] = useState([])
-
-  const handleEdit = () => { }
-  const handleDelete = () => { }
   const handleAdd = () => {
-    setTodos([...Todos, { Todo, isCompleted: false }])
-    setTodo("")
-    console.log(Todos);
-  }
+    if (Todo.trim() === "") {
+      alert("Input is empty! Please enter a task.");
+      return;
+    }
+
+    if (editId) {
+      // update todo in place
+      setTodos(
+        Todos.map((item) =>
+          item.id === editId ? { ...item, text: Todo } : item
+        )
+      );
+      setEditId(null); // exit edit mode
+    } else {
+      // add new todo
+      setTodos([
+        ...Todos,
+        { id: Date.now(), text: Todo, isCompleted: false },
+      ]);
+    }
+
+    setTodo("");
+  };
 
   const handleChange = (e) => {
-    setTodo(e.target.value)
-  }
+    setTodo(e.target.value);
+  };
+
+  const handleDelete = (id) => {
+    setTodos(Todos.filter((item) => item.id !== id));
+    if (editId === id) {
+      // if deleting the todo currently being edited → reset input
+      setTodo("");
+      setEditId(null);
+    }
+  };
+
+  const handleToggle = (id) => {
+    setTodos(
+      Todos.map((item) =>
+        item.id === id ? { ...item, isCompleted: !item.isCompleted } : item
+      )
+    );
+  };
+
+  const handleEdit = (id) => {
+    const toEdit = Todos.find((item) => item.id === id);
+    if (toEdit) {
+      setTodo(toEdit.text);
+      setEditId(id);
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setTodo("");
+    setEditId(null);
+  };
 
   return (
     <>
       <Navbar />
-      <div className="container bg-indigo-100 mx-auto m-5 rounded-xl p-5 min-h-[80vh]">
-        <div className="addTodo my-5">
-          <h2 className='text-lg font-bold'>Add a todo</h2>
-          <input onChange={handleChange} value={Todo} type="text" className='w-75' name="" id="" />
-          <button onClick={handleAdd} className='bg-indigo-500 hover:bg-indigo-700 p-2 py-1 text-sm font-bold text-white rounded-md m-2 mx-5 transition-colors duration-150'>Add</button>
-        </div>
-        <h2 className='text-xl font-bold'>Your Todos</h2>
-        <div className="todos">
-          {Todos.map(item => {
-
-
-            return <div key={Todo} className="todo flex w-1/4 m-2 justify-between">
-              <input type="checkbox" value={Todo.isCompleted}/>
-              <div className={item.isCompleted?"line-through":""}> {item.Todo} </div>
-              <div className="buttons">
-                <button onClick={handleEdit} className='bg-indigo-500 hover:bg-indigo-700 p-2 py-1 text-sm font-bold text-white rounded-md m-2 mx-2 transition-colors duration-150'>Edit</button>
-                <button onClick={handleDelete} className='bg-indigo-500 hover:bg-indigo-700 p-2 py-1 text-sm font-bold text-white rounded-md m-2 mx-2 transition-colors duration-150'>Delete</button>
-              </div>
-
+      <div className="flex justify-center p-6">
+        <div className="bg-indigo-100 rounded-xl p-6 min-h-[80vh] w-full max-w-2xl shadow-lg">
+          <div className="addTodo my-5">
+            <h2 className="text-lg font-bold mb-2">Add your todo</h2>
+            <div className="flex gap-3">
+              <input
+                onChange={handleChange}
+                value={Todo}
+                type="text"
+                placeholder="Write your task..."
+                className="flex-1 border rounded-md p-2"
+              />
+              <button
+                onClick={handleAdd}
+                className="bg-indigo-500 hover:bg-indigo-700 px-4 py-2 text-sm font-bold text-white rounded-md transition-colors duration-150"
+              >
+                {editId ? "Update" : "Save"}
+              </button>
+              {editId && (
+                <button
+                  onClick={handleCancelEdit}
+                  className="bg-gray-400 hover:bg-gray-600 px-4 py-2 text-sm font-bold text-white rounded-md transition-colors duration-150"
+                >
+                  Cancel
+                </button>
+              )}
             </div>
-          })}
-        </div>
+          </div>
 
+          <h2 className="text-xl font-bold mb-3">Your Todos</h2>
+          <div className="todos space-y-3">
+            {Todos.length === 0 && (
+              <p className="text-gray-500">
+                No todos available. Please add some tasks.
+              </p>
+            )}
+            {Todos.map((item) => (
+              <div
+                key={item.id}
+                className="todo flex items-center justify-between p-3 bg-white rounded-md shadow-sm"
+              >
+                <div className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={item.isCompleted}
+                    onChange={() => handleToggle(item.id)}
+                  />
+                  <div
+                    className={
+                      item.isCompleted
+                        ? "line-through text-gray-500"
+                        : "text-gray-900"
+                    }
+                  >
+                    {item.text}
+                  </div>
+                </div>
+                <div className="buttons flex gap-2">
+                  <button
+                    onClick={() => handleEdit(item.id)}
+                    className="bg-indigo-500 hover:bg-indigo-700 px-3 py-1 text-sm font-bold text-white rounded-md transition-colors duration-150"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDelete(item.id)}
+                    className="bg-red-500 hover:bg-red-700 px-3 py-1 text-sm font-bold text-white rounded-md transition-colors duration-150"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
