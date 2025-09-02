@@ -109,7 +109,7 @@ function App() {
 
           {/* Toggle for showing finished */}
           <label className="flex items-center gap-2 mb-3">
-            <input
+            <input className="cursor-pointer"
               onChange={toggleFinished}
               type="checkbox"
               checked={showFinished}
@@ -132,7 +132,7 @@ function App() {
                 className="todo flex items-center justify-between p-3 bg-white rounded-md shadow-sm"
               >
                 <div className="flex items-center gap-2">
-                  <input
+                  <input className="cursor-pointer"
                     type="checkbox"
                     checked={item.isCompleted}
                     onChange={() => handleToggle(item.id)}
